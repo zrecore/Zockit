@@ -1,17 +1,27 @@
-const http = require('http');
 const MongoClient = require('mongodb').MongoClient;
+const express = require('express');
+const cors = require('cors');
+const bodyParser = require('body-parser');
 
+const app = express();
 const hostname = '127.0.0.1';
 const port = 6969;
 
-const server = http.createServer((req, res) => {
-    res.statusCode = 200;
-    res.setHeader('Content-type', 'text/JSON');
-    res.end('Worked');
+app.use(cors());
+app.use(bodyParser.urlencoded({extend: false}));
+app.use(bodyParser.json());
+
+app.post('/', function(req, res){
+    if(req.body.username === 'goodusername'){
+        res.send('SUCCESS');
+    }
+    else{
+        res.send('FAILED');
+    }
 });
 
-server.listen(port, hostname, () => {
-    MongoSetup();
+app.listen(port, () => {
+    console.log('Started Express Listener');
 });
 
 /*MONGO DB CONNECTION*/
