@@ -11,13 +11,13 @@
         name: "Login",
         methods: {
             CheckLogin: function() {
-                this.$http.post('http://localhost:6969/', {username: 'badusername', password: 'goodpassword'})
+                this.$http.post('http://localhost:6969/', {username: 'theguy@obligatoryurl.com', password: 'goodpassword'})
                 .then(function (res) {
                     console.log(res.data);
                 }).catch(function (err) {
                     console.log(err.data);
                 }).finally(function () {
-                    console.log('Tried');
+
                 })
             }
         }

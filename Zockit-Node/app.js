@@ -2,6 +2,7 @@ const MongoClient = require('mongodb').MongoClient;
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const zocket = require('zocket');
 
 const app = express();
 const hostname = '127.0.0.1';
@@ -12,12 +13,10 @@ app.use(bodyParser.urlencoded({extend: false}));
 app.use(bodyParser.json());
 
 app.post('/', function(req, res){
-    if(req.body.username === 'goodusername'){
-        res.send('SUCCESS');
-    }
-    else{
-        res.send('FAILED');
-    }
+    CheckLogin(req.body.username, '').then(function(result){
+        console.log(result);
+        res.send(result);
+    });
 });
 
 app.listen(port, () => {
@@ -25,24 +24,28 @@ app.listen(port, () => {
 });
 
 /*MONGO DB CONNECTION*/
-const MongoSetup = async() => {
-    try{
+function CheckLogin(username, password){
+    let promise = new Promise(async function(resolve, reject){
         const mongo_host = 'mongodb+srv://dev-user:Password@pfifl-dev-cluster-guufd.mongodb.net/test?retryWrites=true&w=majority';
         const db = await MongoClient.connect(mongo_host, {useNewUrlParser: true});
-        const dbo = db.db('t_logins')
+        const dbo = db.db('t_logins');
         const t_accounts = dbo.collection('t_accounts');
-
-        t_accounts.findOne({}, function(err, result){
-            if(!err){
-                console.log('Result: '+result._email);
-                db.close();
-            }
-            else{
-                throw err;
-            }
-        });
-    }
-    catch(e){
-        console.log(e);
-    }
-};
+        let data = 'NO DATA';
+        try{
+            console.log('MONGO');
+            t_accounts.findOne({_email: username}, {_email: 1, _password: 1}, function(err, result){
+                if(!err){
+                    data = 'WE HAVE DATA';
+                    resolve(data);
+                }else{
+                    data = 'WE DO NOT HAVE DATA';
+                    resolve(data);
+                }
+            });
+        }catch(err){
+            data = 'WE DONT HAVE DATA';
+            resolve(data);
+        }
+    });
+    return promise;
+}
