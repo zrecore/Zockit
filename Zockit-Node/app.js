@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 const zocket = require('zocket');
 
 const app = express();
-const hostname = '127.0.0.1';
+const comm = zocket();
 const port = 6969;
 
 app.use(cors());
