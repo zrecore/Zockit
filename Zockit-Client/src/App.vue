@@ -7,6 +7,7 @@
     </div>
     <div v-else="">
       <div id="master-notLogged">
+        <button v-on:click="CreateButton">Log In/Create</button>
         <div v-if="LogState.logging">
           <login/>
         </div>
@@ -22,7 +23,7 @@
   import home from '@/views/Home.vue'
   import login from '@/views/Login.vue'
   import createaccount from '@/views/CreateAccount.vue';
-  import {mapGetters} from 'vuex';
+  import {mapGetters, mapActions} from 'vuex';
 
   export default {
     name: 'app',
@@ -31,9 +32,14 @@
       login,
       createaccount
     },
+    methods: {
+      ...mapActions(['acToggleLogging']),
+      CreateButton: function(){
+        this.acToggleLogging();
+      }
+    },
     computed: mapGetters([
-            'LogState',
-            'TestGet'
+        'LogState'
     ])
   }
 </script>
