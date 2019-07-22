@@ -4,12 +4,12 @@ import store from './store'
 import router from './router'
 import axios from 'axios'
 
-Vue.prototype.$http = axios
+Vue.prototype.$http = axios;
 
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
 
 new Vue({
   store,
   router,
   render: h => h(App)
-}).$mount('#app')
+}).$mount('#app');

@@ -1,10 +1,19 @@
 <template>
   <div id="app">
-    <div v-if="false">
-      <home/>
+    <div v-if="LogState.loggedIn">
+      <div id="master-logged">
+        <home/>
+      </div>
     </div>
     <div v-else="">
-      <login/>
+      <div id="master-notLogged">
+        <div v-if="LogState.logging">
+          <login/>
+        </div>
+        <div v-else="">
+          <createaccount/>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -12,24 +21,20 @@
 <script>
   import home from '@/views/Home.vue'
   import login from '@/views/Login.vue'
+  import createaccount from '@/views/CreateAccount.vue';
+  import {mapGetters} from 'vuex';
 
   export default {
     name: 'app',
     components: {
       home,
-      login
+      login,
+      createaccount
     },
-    data() {
-      return{
-        LoginData: {
-          _username: 'username',
-          _password: 'password',
-          _userid: '1234'
-        }
-      }
-    },
-    methods:{
-    }
+    computed: mapGetters([
+            'LogState',
+            'TestGet'
+    ])
   }
 </script>
 
