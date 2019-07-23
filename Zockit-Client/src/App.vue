@@ -33,7 +33,9 @@
       createaccount
     },
     methods: {
-      ...mapActions(['acToggleLogging']),
+      ...mapActions([
+          'acToggleLogging'
+      ]),
       CreateButton: function(){
         this.acToggleLogging();
       }

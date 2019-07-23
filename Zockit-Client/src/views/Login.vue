@@ -8,28 +8,42 @@
 
 <script>
     import {mapActions} from 'vuex';
+    import axios from 'axios';
 
     export default {
         name: "Login",
         methods: {
-            ...mapActions(['acLogin']),
-            CheckLogin: function() {
+            ...mapActions([
+                'acLogin'
+            ]),
+            CheckLogin: async function(){
                 const email_raw = document.getElementById('login-email').value;
                 const pw_raw = document.getElementById('login-pw').value;
+
+                //Test login variable
+                let validLog = false;
+
                 if(email_raw){
                     if(pw_raw){
-                        this.$http.post('http://localhost:6969/login', {email: email_raw, password: pw_raw, remember: false})
-                            .then(function (res) {
-                                if(res.data === 'validLogin'){
-                                    acLogin();
-                                }else{
-                                    console.log('Invalid Login');
-                                }
-                            }).catch(function (err) {
-                            console.log(err.data);
-                        }).finally(function () {
-
-                        })
+                        try{
+                            await axios.post('http://localhost:6969/login', {email: email_raw, password: pw_raw, remember: false})
+                                .then(function(res) {
+                                    if(res.data === 'validLogin'){
+                                        console.log('Valid Login');
+                                        validLog = true;
+                                    }else{
+                                        console.log('Invalid Login');
+                                    }
+                                }).catch(function (err) {
+                                console.log('HTTP Post Error');
+                            })
+                        }catch(err){
+                            console.log(err);
+                        }finally {
+                            if(validLog){
+                                this.acLogin();
+                            }
+                        }
                     }else{
                         console.log('No Password');
                     }
