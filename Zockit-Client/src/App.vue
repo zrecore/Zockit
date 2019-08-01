@@ -1,20 +1,20 @@
 <template>
   <div id="app">
-    <div v-if="LogState.loggedIn">
-      <div id="master-logged">
+    <span v-if="LogState.loggedIn">
+      <span id="master-logged">
         <home/>
-      </div>
-    </div>
+      </span>
+    </span>
     <div v-else="">
-      <div id="master-notLogged">
+      <span id="master-notLogged">
         <button v-on:click="CreateButton">Log In/Create</button>
-        <div v-if="LogState.logging">
+        <span v-if="LogState.logging">
           <login/>
-        </div>
-        <div v-else="">
+        </span>
+        <span v-else="">
           <createaccount/>
-        </div>
-      </div>
+        </span>
+      </span>
     </div>
   </div>
 </template>
@@ -23,6 +23,7 @@
   import home from '@/views/Home.vue'
   import login from '@/views/Login.vue'
   import createaccount from '@/views/CreateAccount.vue';
+  import axios from 'axios';
   import {mapGetters, mapActions} from 'vuex';
 
   export default {
@@ -32,12 +33,39 @@
       login,
       createaccount
     },
+    created(){
+      this.CheckLoginToken();
+    },
     methods: {
       ...mapActions([
-          'acToggleLogging'
+          'acToggleLogging',
+          'acLogin'
       ]),
       CreateButton: function(){
         this.acToggleLogging();
+      },
+      CheckLoginToken: async function(){
+        let validToken = false;
+        try{
+          await axios.post('http://localhost:6969/check-token', {tData: 'Test Data'},
+          {withCredentials: true, 'Access-Control-Allow-Origin': 'http://localhost:6969'})
+          .then(async function(res){
+            if(res.data === 'validToken'){
+              console.log('Valid Token');
+              validToken = true;
+            }else if(res.data === 'invalidToken'){
+              console.log('Invalid Token');
+            }else{
+              console.log('Token Error');
+            }
+          });
+        }catch(err){
+          console.log(err);
+        }finally{
+          if(validToken){
+            this.acLogin();
+          }
+        }
       }
     },
     computed: mapGetters([

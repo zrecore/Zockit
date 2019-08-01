@@ -20,26 +20,25 @@
                 const email_raw = document.getElementById('login-email').value;
                 const pw_raw = document.getElementById('login-pw').value;
 
-                //Test login variable
+                //Login variable
                 let validLog = false;
 
                 if(email_raw){
                     if(pw_raw){
                         try{
-                            await axios.post('http://localhost:6969/login', {email: email_raw, password: pw_raw, remember: false})
+                            await axios.post('http://localhost:6969/login', {email: email_raw, password: pw_raw, remember: true}, {withCredentials: true, 'Access-Control-Allow-Origin': 'http://localhost:6969'})
                                 .then(function(res) {
                                     if(res.data === 'validLogin'){
-                                        console.log('Valid Login');
                                         validLog = true;
                                     }else{
-                                        console.log('Invalid Login');
+                                        validLog = false;
                                     }
                                 }).catch(function (err) {
-                                console.log('HTTP Post Error');
+
                             })
                         }catch(err){
                             console.log(err);
-                        }finally {
+                        }finally{
                             if(validLog){
                                 this.acLogin();
                             }

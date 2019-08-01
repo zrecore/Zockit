@@ -15,7 +15,9 @@ export default new Vuex.Store({
   },
   mutations: {
     mToggleLogging: (state, isLogging) => (state.loginStatus.logging = isLogging),
-    mLogin: (state) => (state.loginStatus.loggedIn = true)
+    mLogin: (state) => {
+      state.loginStatus.loggedIn = true;
+    }
   },
   actions: {
     acToggleLogging(){

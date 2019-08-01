@@ -11,13 +11,7 @@ export default new Router({
     {
       path: '/',
       name: 'hub',
-      component: Hub,
-      alias: '/hub'
-    },
-    {
-      path: '/login',
-      name: 'login',
-      component: Login
+      component: Hub
     },
     {
       path: '/inventory',
@@ -25,19 +19,9 @@ export default new Router({
       component: () => import('./views/Inventory.vue')
     },
     {
-      path: '/orders',
-      name: 'order',
-      component: () => import('./views/Orders.vue')
-    },
-    {
-      path: '/money',
-      name: 'money',
-      component: () => import('./views/Money.vue')
-    },
-    {
-      path: '/settings',
-      name: 'settings',
-      component: () => import('./views/Settings.vue')
-    },
+      path: '/passwords',
+      name: 'passwords',
+      component: () => import('./views/Passwords.vue')
+    }
   ]
 })
